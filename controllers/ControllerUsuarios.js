@@ -10,7 +10,7 @@ module.exports = {
         req.body.senha = await bcrypt.hash(req.body.senha, salt)
 
         // SALVA USUÁRIO NO BANCO DE DADOS
-        db.query('INSERT INTO cad_usuario SET ?', req.body, (error, result) => {
+        db.query('INSERT INTO Cad_Usuario SET ?', req.body, (error, result) => {
             if (error) {
                 if (error.errno == 1062) {
                     res.status(401).json({
@@ -26,7 +26,7 @@ module.exports = {
 
     },
     async busca(req, res) {
-        db.query('SELECT * FROM cad_usuario', (error, result) => {
+        db.query('SELECT * FROM Cad_Usuario', (error, result) => {
             if (error) {
                 return new Error
             }
@@ -36,7 +36,7 @@ module.exports = {
 
     },
     async detalhes(req, res) {
-        db.query('SELECT * FROM cad_usuario WHERE ID = ?', req.params.id, (error, result) => {
+        db.query('SELECT * FROM Cad_Usuario WHERE ID = ?', req.params.id, (error, result) => {
             res.status(201).json(result)
         })
         //db.close()
@@ -48,7 +48,7 @@ module.exports = {
             senha
         } = req.body
 
-        db.query('SELECT * FROM cad_usuario WHERE EMAIL = ?', email, async (error, result) => {
+        db.query('SELECT * FROM Cad_Usuario WHERE EMAIL = ?', email, async (error, result) => {
             if (error) {
                 return new Error
             }
@@ -77,7 +77,7 @@ module.exports = {
 
     async atualizar(req, res) {
         req.body.senha = await bcrypt.hash(req.body.senha, salt)
-        db.query('UPDATE cad_usuario SET ? WHERE ID = ?', [req.body, req.params.id], (error, result) => {
+        db.query('UPDATE Cad_Usuario SET ? WHERE ID = ?', [req.body, req.params.id], (error, result) => {
             if (error) {
                 return new Error
             }
@@ -87,7 +87,7 @@ module.exports = {
     },
 
     async deletar(req, res) {
-        db.query('DELETE FROM cad_usuario WHERE ID = ?', req.params.id, (error, result) => {
+        db.query('DELETE FROM Cad_Usuario WHERE ID = ?', req.params.id, (error, result) => {
             if (error) {
                 res.status(402).json(error)
                 return new Error(error)
