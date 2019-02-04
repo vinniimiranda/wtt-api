@@ -48,7 +48,7 @@ module.exports = {
             senha
         } = req.body
 
-        db.query('SELECT * FROM Cad_Usuario WHERE EMAIL = ?', email, async (error, result) => {
+        db.query('SELECT * FROM Cad_Usuario WHERE EMAIL = ? AND Situacao = "Ativo" ', email, async (error, result) => {
             if (error) {
                 return new Error
             }

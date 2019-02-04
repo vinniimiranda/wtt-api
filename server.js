@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 requireDir("./models")
 require('./routes/usuarios')(app)
+require('./routes/empresa')(app)
 
 
 
-app.listen(port, () => console.log('API em funcionamento!'))
+app.listen(port, () => console.log(`API em funcionamento através da porta ${port}`))
