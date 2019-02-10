@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 requireDir("./models")
 require('./routes/usuarios')(app)
+require('./routes/funcionarios')(app)
 require('./routes/empresa')(app)
 
 

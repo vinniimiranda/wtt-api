@@ -21,6 +21,7 @@ module.exports = {
         // Salva contatos da empresa
         db.query('INSERT INTO Cad_Contato SET ?', req.body, (error, result) => {
             if (error) {
+                res.status(402).json(error)
                 return new Error
             }
             return res.status(201).json(result)
@@ -30,6 +31,7 @@ module.exports = {
         // Salva contatos da empresa
         db.query('INSERT INTO Cad_Telefone SET ?', req.body, (error, result) => {
             if (error) {
+                res.status(402).json(error)
                 return new Error
             }
             return res.status(201).json(result)
@@ -39,6 +41,7 @@ module.exports = {
     async busca(req, res) {
         db.query('SELECT * FROM Cad_Empresa', (error, result) => {
             if (error) {
+                res.status(402).json(error)
                 return new Error
             }
             return res.status(201).json(result)
@@ -50,19 +53,23 @@ module.exports = {
         let empresa = []
         db.query('SELECT * FROM Cad_Empresa WHERE ID = ?', req.params.id, (error, result) => {
             empresa.push({empresa: result[0]})
+            db.query('SELECT * FROM Cad_Contato WHERE Empresa_id = ?',  req.params.id, (error, result) => {
+                empresa.push({contatos: result})
+                db.query('SELECT * FROM Cad_Telefone WHERE Empresa_id = ?', req.params.id, (error, result) => {
+                    empresa.push({telefones: result})  
+                     
+                    res.status(201).json(empresa)
+                })
+            })
         })
-        db.query('SELECT * FROM Cad_Contato WHERE Empresa_id = ?',  req.params.id, (error, result) => {
-            empresa.push({contatos: result})
-        })
-        db.query('SELECT * FROM Cad_Telefone WHERE Empresa_id = ?', req.params.id, (error, result) => {
-            empresa.push({telefones: result})   
-            setTimeout(()=>res.status(201).json(empresa),1000)
-        })
+        
+        
         
     },
     async atualizar(req, res) {
         db.query('UPDATE Cad_Empresa SET ? WHERE ID = ?', [req.body, req.params.id], (error, result) => {
             if (error) {
+                res.status(402).json(error)
                 return new Error
             }
             return res.status(201).json(result)
