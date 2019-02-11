@@ -1,4 +1,8 @@
 const db = require('../config/db')
+const multer = require('multer')
+var storage = multer.memoryStorage()
+var upload = multer({storage: storage});
+const fs = require('fs');
 
 module.exports = {
     async criar (req, res) {
@@ -14,7 +18,7 @@ module.exports = {
 
     async busca (req, res){
         
-        db.query(`SELECT f.id, f.cpf, f.nome, f.email, f.dtNascimento, f.nomeDaMae, f.nomeDoPai, f.apelido,
+        db.query(`SELECT f.id, f.cpf, f.rg, f.dtEmissaoRg, f.orgaoExpedidor, f.tituloEleitor, f.tipoContratacao, f.dtContratacao, f.nome, f.email, f.dtNascimento, f.nomeDaMae, f.nomeDoPai, f.apelido,
                   f.estadoCivil, f.empresa_id, e.cnpj as empresaCnpj, f.cep, f.logradouro, f.numero, f.complemento,
                   f.bairro, f.cidade, f.uf , e.razaoSocial as empresaRazaoSocial
                   FROM Cad_Funcionario as f INNER JOIN Cad_Empresa as e on f.empresa_id  = e.id`, (error, result) => {
@@ -38,6 +42,7 @@ module.exports = {
     async atualizar(req, res) {
         db.query('UPDATE Cad_Funcionario SET ? WHERE id = ?', [req.body, req.params.id], (error, result) => {
             if (error) {
+                console.log(error)
                 res.status(401).json(error)
                 return new Error
             }
@@ -55,8 +60,22 @@ module.exports = {
         })
     },
     async criaAnexo(req, res) {
-        db.query('INSERT INTO anexo_funcionario SET ? ', req.body, (error, result) => {
+        let data = fs.readFileSync('temp/upload/' + req.file.filename)
+        
+        let form = {
+            descricao: req.body['descricao'],
+            tipo: req.body['tipo'],
+            arquivo: data,
+            dtVencimento: req.body['dtVencimento'],
+            nomeArquivo: req.file.filename,
+            extensao: '.'+req.file.mimetype.split('/')[1],
+            funcionario_id: req.body['funcionario_id'],
+            dtCriacao: new Date()
+        }
+        
+        db.query('INSERT INTO anexo_funcionario SET ? ', form, (error, result) => {
             if (error) {
+                console.log(error)
                 res.status(401).json(error)
                 return new Error(error)
             }
