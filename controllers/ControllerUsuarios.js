@@ -58,6 +58,7 @@ module.exports = {
                 })
                 return new Error
             }
+            console.log(bcrypt.encodeBase64(result[0].senha))
             const senhaValida = await bcrypt.compare(senha, result[0].senha)
             if (!senhaValida) {
                 res.status(401).json({
@@ -65,8 +66,8 @@ module.exports = {
                 })
                 return new Error
             }
-            const token = jwt.sign({id:result[0].id}, auth.secret, {
-                expiresIn: 3600
+            const token = jwt.sign({id:result[0].id, tipo:result[0].tipo}, auth.secret, {
+                expiresIn: 60*60
             })
             if (senhaValida) {
                 res.status(201).json([{user:result[0]} , {token:token}])

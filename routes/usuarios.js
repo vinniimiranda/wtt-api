@@ -7,7 +7,7 @@ const authMiddleware = require('../middlewares/auth')
 
 router.post('/login',  ControllerUsuario.login)
 router.post('/usuarios', ControllerUsuario.criar)
-//router.use(authMiddleware)
+// router.use(authMiddleware)
 router.get('/usuarios', ControllerUsuario.busca)
 router.get('/usuarios/:id', ControllerUsuario.detalhes)
 router.patch('/usuarios/:id', ControllerUsuario.atualizar)

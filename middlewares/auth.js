@@ -4,20 +4,32 @@ const authConfig  = require('../config/auth.json')
 module.exports = (req, res, next) => {
     const token = req.headers.token
 
-
-    if(!token) {
-        return res.status(401).send({ erro: "Token não informado"})
-    }
     
-    jwt.verify(token, authConfig.secret, (err, decode) => {
-        if(err)
-            return res.status(401).send({erro: "Tokén inválido"})
-
-        req.id = decode.id
-        //req.nomeUser = decode.nome
+    if(!token) {
+        if(!res.headersSent){
+            return res.status(401).send({ erro: "Token não informado"});
+        }
+    }
+    try{
+        
+        jwt.verify(token, authConfig.secret, (err, decoded) => {
+        if(err){
+            if(!res.headersSent) {
+                res.status(401).send({erro: "Tokén inválido"}, 0 , 500);
+            }
+            
+        }
+        
+       req.userId = decoded.id
+       req.tipoUsuario = decoded.tipo 
+       
+        
 
         return next()
+        
     })
-
-    next()
+    
+    
+    }
+    catch(erro){ return new Error}
 }
