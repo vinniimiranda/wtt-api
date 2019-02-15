@@ -1,9 +1,9 @@
 const multer =require('multer')
 const path = require('path')
 const crypto = require('crypto')
-console.log(path.resolve(__dirname, '..',  'temp', 'upload'))
+console.log(path.resolve(__dirname, '..', '..', 'temp', 'upload'))
 module.exports = { 
-    dest: path.resolve(__dirname, '..',  'temp', 'upload'),
+    dest: path.resolve(__dirname, '..', '..',  'temp', 'upload'),
     storage: multer.diskStorage({
         destination: (req, file, callback)=> {
             callback(null, path.resolve(__dirname, '..', '..',  'temp', 'upload'))
