@@ -6,7 +6,7 @@ module.exports = {
     dest: path.resolve(__dirname, '..',  'temp', 'upload'),
     storage: multer.diskStorage({
         destination: (req, file, callback)=> {
-            callback(null, path.resolve(__dirname, '..',  'temp', 'upload'))
+            callback(null, path.resolve(__dirname, '..', '..',  'temp', 'upload'))
         },
         filename: (req, file, callback)=> {
             crypto.randomBytes(16, (err, hash) => {
