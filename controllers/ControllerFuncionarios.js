@@ -60,14 +60,14 @@ module.exports = {
         })
     },
     async criaAnexo(req, res) {
-        let data = fs.readFileSync('temp/upload/' + req.file.filename)
+        
         
         let form = {
             descricao: req.body['descricao'],
             tipo: req.body['tipo'],
-            arquivo: data,
+            caminhoArquivo: req.file.filename,
             dtVencimento: req.body['dtVencimento'],
-            nomeArquivo: req.file.filename,
+            nomeArquivo: req.file.originalname,
             extensao: '.'+req.file.mimetype.split('/')[1],
             funcionario_id: req.body['funcionario_id'],
             dtCriacao: new Date()

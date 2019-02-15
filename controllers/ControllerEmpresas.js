@@ -6,7 +6,7 @@ module.exports = {
         db.query('INSERT INTO Cad_Empresa SET ?', req.body, (error, result) => {
             if (error) {
                 if (error.errno == 1062) {
-                    res.status(401).json({
+                    res.status(403).json({
                         erro: "CNPJ já cadastrado na base de dados"
                     })
                 }

@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const port = process.env.PORT || 4000
 
 app.use(bodyParser.json())
+app.use(express.static(__dirname + '/temp/upload'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cors())
 requireDir("./models")
