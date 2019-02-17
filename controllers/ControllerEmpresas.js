@@ -17,6 +17,33 @@ module.exports = {
         })
 
     },
+    async indicadorEmpresa (req, res) {
+        const empresa_id = req.params.id
+        if (empresa_id != 0){
+            db.query('SELECT COUNT(1) as qtdEmpresa, (SELECT COUNT(1) FROM Cad_Funcionario WHERE empresa_id = Empresa.id) as qtdFuncionarios FROM Cad_Empresa as Empresa WHERE ID = ? ', empresa_id,  (error, result) => {
+                if (error) {
+                    res.status(401).json(error)
+                    return new Error
+                }
+                return res.status(201).json(result)
+            }) 
+        }
+        // Busca todas empreas 
+        else{
+            db.query(`SELECT COUNT(1) as qtdEmpresa,
+                      (SELECT COUNT(1) FROM Cad_Funcionario) as qtdFuncionarios,
+                      (SELECT COUNT(1) FROM anexo_funcionario WHERE dtVencimento BETWEEN DATE_SUB(now(), INTERVAL 60 DAY) AND NOW()) AS qtdFuncionarioDocVencidos,
+                      (SELECT COUNT(1) FROM anexo_funcionario WHERE dtVencimento BETWEEN DATE_SUB(now(), INTERVAL -60 DAY) AND NOW()) AS qdtFuncionariosDocAVencer
+                      FROM Cad_Empresa  `,  (error, result) => {
+                if (error) {
+                    res.status(401).json(error)
+                    return new Error
+                }
+                return res.status(201).json(result)
+            })
+        }
+
+    },
     async criaContato(req, res) {
         // Salva contatos da empresa
         db.query('INSERT INTO Cad_Contato SET ?', req.body, (error, result) => {

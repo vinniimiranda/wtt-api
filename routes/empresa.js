@@ -10,6 +10,7 @@ const authMiddleware = require('../middlewares/auth')
 router.post('/empresa', ControleEmpresas.criar)
 router.get('/empresa', ControleEmpresas.busca)
 router.get('/empresa/:id', ControleEmpresas.detalhes)
+router.get('/indicadorEmpresa/:id', ControleEmpresas.indicadorEmpresa)
 router.patch('/empresa/:id', ControleEmpresas.atualizar)
 router.delete('/empresa/:id', ControleEmpresas.deletar)
 

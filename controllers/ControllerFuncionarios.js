@@ -29,6 +29,19 @@ module.exports = {
             res.status(201).json(result)
         })
     },
+    async buscaPorEmpresa (req, res) {
+        db.query(`SELECT f.id, f.cpf, f.rg, f.dtEmissaoRg, f.orgaoExpedidor, f.tituloEleitor, f.tipoContratacao, f.dtContratacao, f.nome, f.email, f.dtNascimento, f.nomeDaMae, f.nomeDoPai, f.apelido,
+                  f.estadoCivil, f.empresa_id, e.cnpj as empresaCnpj, f.cep, f.logradouro, f.numero, f.complemento,
+                  f.bairro, f.cidade, f.uf , e.razaoSocial as empresaRazaoSocial
+                  FROM Cad_Funcionario as f INNER JOIN Cad_Empresa as e on f.empresa_id  = e.id WHERE  f.empresa_id = ?`, req.params.empresa_id, (error, result) => {
+            if (error) {
+                res.status(401).json(error)
+                return new Error
+            }
+            return res.status(201).json(result)
+        })
+    },
+
     async detalhes(req, res) {
         db.query('SELECT * FROM Cad_Funcionario WHERE id = ?', req.params.id, (error, result) => {
             if (error) {
