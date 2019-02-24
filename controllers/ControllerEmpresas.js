@@ -1,4 +1,5 @@
 const db = require('../config/db')
+const ControllerEmail = require('./ControllerEmail')
 
 module.exports = {
     async criar(req, res) {
@@ -203,5 +204,24 @@ module.exports = {
             
             res.status(201).json(result)
         })
+    },
+    async alerta() {
+        
+        let qtdVencidos=0
+        let qtdAVencer = 0
+        let html = ""
+        let subject = "Relatório de Documentos Vencidos - Empresas        "
+
+        db.query(`SELECT COUNT(1) as qtdVencidos FROM anexo_empresa WHERE dtVencimento BETWEEN DATE_SUB(now(), INTERVAL 60 DAY) AND NOW()`, async (erro, result) => {
+            qtdVencidos = result[0].qtdVencidos 
+            db.query(`SELECT COUNT(1) as qtdAVencer FROM anexo_empresa WHERE dtVencimento BETWEEN NOW() AND DATE_SUB(now(), INTERVAL -60 DAY)`, async (erro, result) => {
+                qtdAVencer =  result[0].qtdAVencer
+                html = `<h1>Quantidade de Documentos Vencidos: ${qtdVencidos}</h1>
+                        <h1>Quantidade de Documentos à Vencer ${qtdAVencer}</h1>`
+    
+                ControllerEmail.main(html, subject)
+            })
+        })
     }
+
 }
