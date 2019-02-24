@@ -34,7 +34,7 @@ module.exports = {
             db.query(`SELECT COUNT(1) as qtdEmpresa,
                       (SELECT COUNT(1) FROM Cad_Funcionario) as qtdFuncionarios,
                       (SELECT COUNT(1) FROM anexo_funcionario WHERE dtVencimento BETWEEN DATE_SUB(now(), INTERVAL 60 DAY) AND NOW()) AS qtdFuncionarioDocVencidos,
-                      (SELECT COUNT(1) FROM anexo_funcionario WHERE dtVencimento  NOW() AND BETWEEN DATE_SUB(now(), INTERVAL -60 DAY)) AS qdtFuncionariosDocAVencer
+                      (SELECT COUNT(1) FROM anexo_funcionario WHERE dtVencimento BETWEEN  NOW() AND  DATE_SUB(now(), INTERVAL -60 DAY)) AS qdtFuncionariosDocAVencer
                       FROM Cad_Empresa  `,  (error, result) => {
                 if (error) {
                     res.status(401).json(error)
