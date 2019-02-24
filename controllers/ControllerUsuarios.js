@@ -67,7 +67,7 @@ module.exports = {
                 return new Error
             }
             const token = jwt.sign({id:result[0].id, tipo:result[0].tipo}, auth.secret, {
-                expiresIn: 60*60
+                expiresIn: 60*60*5
             })
             if (senhaValida) {
                 res.status(201).json([{user:result[0]} , {token:token}])

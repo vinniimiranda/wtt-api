@@ -169,5 +169,39 @@ module.exports = {
             
             res.status(201).json(result)
         })
+    },
+    async criaAnexo(req, res) {
+        
+        
+        let form = {
+            descricao: req.body['descricao'],
+            tipo: req.body['tipo'],
+            caminhoArquivo: req.file.filename,
+            dtVencimento: req.body['dtVencimento'],
+            nomeArquivo: req.file.originalname,
+            extensao: '.'+req.file.mimetype.split('/')[1],
+            empresa_id: req.body['empresaId'],
+            dtCriacao: new Date()
+        }
+        
+        db.query('INSERT INTO anexo_empresa SET ? ', form, (error, result) => {
+            if (error) {
+                console.log(error)
+                res.status(401).json(error)
+                return new Error(error)
+            }
+            
+            res.status(201).json(result)
+        })
+    },
+    async buscaAnexo(req, res) {
+        db.query('SELECT * FROM anexo_empresa WHERE empresa_id = ?', req.params.empresa_id, (error, result) => {
+            if (error) {
+                res.status(401).json(error)
+                return new Error(error)
+            }
+            
+            res.status(201).json(result)
+        })
     }
 }
