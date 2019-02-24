@@ -5,7 +5,7 @@ const authMiddleware = require('../middlewares/auth')
 
 
 
-// router.use(authMiddleware)
+//router.use(authMiddleware)
 // Empresa
 router.post('/empresa', ControleEmpresas.criar)
 router.get('/empresa', ControleEmpresas.busca)

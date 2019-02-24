@@ -150,9 +150,11 @@ module.exports = {
         
     },
     async atualizar(req, res) {
-        db.query('UPDATE Cad_Empresa SET ? WHERE ID = ?', [req.body, req.params.id], (error, result) => {
+        console.log(req.body);
+        
+        db.query('UPDATE Cad_Empresa SET ? WHERE ID = ? ', [req.body, req.params.id], (error, result) => {
             if (error) {
-                res.status(402).json(error)
+                res.status(401).json(error)
                 return new Error
             }
             return res.status(201).json(result)

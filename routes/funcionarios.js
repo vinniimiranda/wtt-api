@@ -6,7 +6,7 @@ const multer  = require('multer')
 const multerConfig = require('../config/multer')
 
 
-// router.use(authMiddleware)
+router.use(authMiddleware)
 router.post('/funcionario', ControllerFuncionario.criar)
 router.get('/funcionario', ControllerFuncionario.busca)
 router.get('/funcionarioPorEmpresa/:empresa_id', ControllerFuncionario.buscaPorEmpresa)
