@@ -177,9 +177,9 @@ module.exports = {
         let form = {
             descricao: req.body['descricao'],
             tipo: req.body['tipo'],
-            caminhoArquivo: req.file.filename,
+            caminhoArquivo: req.file.filename.replace(/\s/g, ''),
             dtVencimento: req.body['dtVencimento'],
-            nomeArquivo: req.file.originalname,
+            nomeArquivo: req.file.originalname.replace(/\s/g, ''),
             extensao: '.'+req.file.mimetype.split('/')[1],
             empresa_id: req.body['empresaId'],
             dtCriacao: new Date()

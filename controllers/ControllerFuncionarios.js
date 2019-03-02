@@ -81,13 +81,15 @@ module.exports = {
         let form = {
             descricao: req.body['descricao'],
             tipo: req.body['tipo'],
-            caminhoArquivo: req.file.filename,
+            caminhoArquivo: req.file.filename.replace(/\s/g, ''),
             dtVencimento: req.body['dtVencimento'],
-            nomeArquivo: req.file.originalname,
+            nomeArquivo: req.file.originalname.replace(/\s/g, ''),
             extensao: '.'+req.file.mimetype.split('/')[1],
             funcionario_id: req.body['funcionario_id'],
             dtCriacao: new Date()
         }
+        
+        console.log(form);
         
         db.query('INSERT INTO anexo_funcionario SET ? ', form, (error, result) => {
             if (error) {
