@@ -1,29 +1,18 @@
 "use strict";
-const nodemailer = require("nodemailer");
-
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey("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");
 
 module.exports = {
     async main(html, subject) {
 
-        const transporter = nodemailer.createTransport({
-            service: "Gmail",
-            auth: {
-                user: "vinniimiranda@gmail.com", // generated ethereal user
-                pass: "matadorx" // generated ethereal password
-            }
-        });
-
-
-        let mailOptions = {
-            from: '"Sistema" <vinniimiranda@gmail.com>',
+        const msg = {
             to: "vinniimiranda@gmail.com, lpfernandes_@hotmail.com",
-            subject,
-            text: "",
-            html
+            from: 'admin@gdocs.com',
+            subject: subject,
+            html: html,
         };
-
-        let info = await transporter.sendMail(mailOptions)
-
+        
+        sgMail.send(msg);
     }
 
 }
