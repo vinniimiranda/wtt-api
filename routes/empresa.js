@@ -29,8 +29,8 @@ router.get('/empresaTelefone/:empresa_id', ControleEmpresas.buscaTelefone)
 router.patch('/empresaTelefone/:id', ControleEmpresas.atualizaTelefone)
 router.delete('/empresaTelefone/:id', ControleEmpresas.deletaTelefone)
 
-setTimeout(()=>{
-    ControleEmpresas.alerta()
-},100)
+// setTimeout(()=>{
+//     ControleEmpresas.alerta()
+// },100)
 
 module.exports = app => app.use('/api/v1', router)

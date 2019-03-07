@@ -18,9 +18,9 @@ router.post('/funcionarioAnexo', multer(multerConfig).single('file'), Controller
 router.get('/funcionarioAnexo/:funcionario_id', ControllerFuncionario.buscaAnexo)
 router.delete('ControllerFuncionario/:id', ControllerFuncionario.deletaAnexo)
 
-setTimeout(()=>{
-    ControllerFuncionario.alerta()
-},100)
+// setTimeout(()=>{
+//     ControllerFuncionario.alerta()
+// },100)
 
 module.exports = app => app.use('/api/v1', router)
 

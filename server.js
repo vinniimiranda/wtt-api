@@ -15,6 +15,8 @@ require('./routes/usuarios')(app)
 require('./routes/funcionarios')(app)
 require('./routes/empresa')(app)
 
-
+app.get('/api/v1/', (req, res ) => {
+    res.send('ok')
+})
 
 app.listen(port, () => console.log(`API em funcionamento através da porta ${port}`))

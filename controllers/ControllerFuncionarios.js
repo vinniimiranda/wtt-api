@@ -4,6 +4,7 @@ var storage = multer.memoryStorage()
 var upload = multer({storage: storage});
 const fs = require('fs');
 const ControllerEmail = require('./ControllerEmail')
+const moment = require('moment')
 
 
 
@@ -122,19 +123,98 @@ module.exports = {
         })
     },
     async alerta() {
-        
-        let qtdVencidos=0
-        let qtdAVencer = 0
-        let html = ""
-        let subject = "Relatório de Documentos Vencidos - Funcionários        "
+        let html = `<!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+        <style>
+                th{
+                   text-align: left;
 
-        db.query(`SELECT COUNT(1) as qtdVencidos FROM anexo_funcionario WHERE dtVencimento BETWEEN DATE_SUB(now(), INTERVAL 60 DAY) AND NOW()`, async (erro, result) => {
-            qtdVencidos = result[0].qtdVencidos 
-            db.query(`SELECT COUNT(1) as qtdAVencer FROM anexo_funcionario WHERE dtVencimento BETWEEN NOW() AND DATE_SUB(now(), INTERVAL -60 DAY)`, async (erro, result) => {
-                qtdAVencer =  result[0].qtdAVencer
-                html = `<h1>Quantidade de Documentos Vencidos: ${qtdVencidos}</h1>
-                        <h1>Quantidade de Documentos à Vencer ${qtdAVencer}</h1>`
-    
+
+                }
+                td{
+                    height: 25px;
+                    width: 20%;
+                    vertical-align: bottom;
+                }
+                th, td {
+                    padding: 15px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                  }
+                  tbody> tr:hover {background-color: #f5f5f5;}
+
+            </style>
+        </head>
+        <body>`
+        let subject = "Relatório de Documentos - Funcionários"
+
+        db.query(`SELECT A.descricao, A.dtVencimento, A.nomeArquivo, A.Tipo, F.nome, F.cpf FROM anexo_funcionario as A Inner Join Cad_Funcionario as F On A.funcionario_id = F.id WHERE dtVencimento BETWEEN DATE_SUB(now(), INTERVAL 60 DAY) AND NOW()`, async (erro, result) => {
+            html += `
+                        <h2>Documentos Vencidos ${result.length}</h2>    
+                        <table class='display'>
+                            <thead>
+                                <tr>
+                                    <th>Documento</th>
+                                    <th>Data de Vencimento</th>
+                                    <th>Nome do Arquivo</th>
+                                    <th>Tipo</th>
+                                    <th>CPF Funcionário</th>
+                                    <th>Nome Funcionario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `
+                result.forEach(doc => {
+                        html += `       <tr>
+                                    <td>${doc.descricao}</td>
+                                    <td>${doc.nomeArquivo}</td>
+                                    <td>${moment(doc.dtVencimento).locale('pt-br').format('L')}</td>
+                                    <td>${doc.Tipo}</td>
+                                    <td>${doc.cpf}</td>
+                                    <td>${doc.nome}</td>
+                                </tr>`
+                    
+                })
+                html += `
+                            </tbody>
+                    </table>
+                    <br><br><hr>`
+
+            db.query(`SELECT A.descricao, A.dtVencimento, A.nomeArquivo, A.Tipo, F.nome, F.cpf FROM anexo_funcionario as A Inner Join Cad_Funcionario as F On A.funcionario_id = F.id WHERE dtVencimento BETWEEN NOW() AND DATE_SUB(now(), INTERVAL -60 DAY)`, async (erro, result) => {
+                
+                html += `
+                        <h2>Documentos à Vencer ${result.length}</h2>    
+                        <table class='display'>
+                            <thead>
+                                <tr>
+                                    <th>Documento</th>
+                                    <th>Nome do Arquivo</th>
+                                    <th>Data de Vencimento</th>
+                                    <th>Tipo</th>
+                                    <th>CPF Funcionário</th>
+                                    <th>Nome Funcionario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        `
+                result.forEach(doc => {
+                        html += `       <tr>
+                                    <td>${doc.descricao}</td>
+                                    <td>${doc.nomeArquivo}</td>
+                                    <td>${moment(doc.dtVencimento).locale('pt-br').format('L')}</td>
+                                    <td>${doc.Tipo}</td>
+                                    <td>${doc.cpf}</td>
+                                    <td>${doc.nome}</td>
+                                </tr>`
+                    
+                })
+                html += `
+                            </tbody>
+                    </table>
+                    </body>
+                    </html>`
+            
                 ControllerEmail.main(html, subject)
             })
         })
