@@ -128,9 +128,15 @@ module.exports = {
         <head>
         <style>
                 th{
-                   text-align: left;
-
-
+                   text-align: center;
+                   background-color: #163eac;
+                   margin: none;
+                   border: none;
+                   padding: none;
+                   color: #fff;
+                   border-spacing: 0px;
+                   overflow-wrap: break-word;
+                   word-wrap: unset;
                 }
                 td{
                     height: 25px;
@@ -138,12 +144,23 @@ module.exports = {
                     vertical-align: bottom;
                 }
                 th, td {
-                    padding: 15px;
-                    text-align: left;
+                    padding: 15px ;
+                    text-align: center;
                     border-bottom: 1px solid #ddd;
                   }
-                  tbody> tr:hover {background-color: #f5f5f5;}
-
+                  tbody> tr:hover {
+                      transition: .5s;
+                      
+                      background-color: #f5f5f5;
+                    }
+                
+                h2{
+                    color: #163eac;
+                }
+                table{
+                    border-collapse: collapse;
+                    
+                }
             </style>
         </head>
         <body>`
@@ -214,7 +231,8 @@ module.exports = {
                     </table>
                     </body>
                     </html>`
-            
+                console.log(html);
+                
                 ControllerEmail.main(html, subject)
             })
         })
