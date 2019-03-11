@@ -7,13 +7,13 @@ const salt = bcrypt.genSaltSync(10)
 module.exports = {
     async criar(req, res) {
         // ENCRIPTAÇÃO DE SENHA
-        req.body.senha = await bcrypt.hash(req.body.senha, salt)
+        if (req.body.senha) req.body.senha = await bcrypt.hash(req.body.senha, salt)
 
         // SALVA USUÁRIO NO BANCO DE DADOS
         db.query('INSERT INTO Cad_Usuario SET ?', req.body, (error, result) => {
             if (error) {
                 if (error.errno == 1062) {
-                    res.status(401).json({
+                    res.status(400).json({
                         erro: "E-mail já cadastrado!"
                     })
                 }
@@ -77,7 +77,8 @@ module.exports = {
     },
 
     async atualizar(req, res) {
-        req.body.senha = await bcrypt.hash(req.body.senha, salt)
+        if (req.body.senha) req.body.senha = await bcrypt.hash(req.body.senha, salt)
+
         db.query('UPDATE Cad_Usuario SET ? WHERE ID = ?', [req.body, req.params.id], (error, result) => {
             if (error) {
                 return new Error
