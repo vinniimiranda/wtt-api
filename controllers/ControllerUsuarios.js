@@ -1,45 +1,62 @@
-const db = require('../config/db')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const auth = require('../config/auth')
 const salt = bcrypt.genSaltSync(10)
-
+const {
+    User
+} = require('../models/')
 module.exports = {
     async criar(req, res) {
         // ENCRIPTAÇÃO DE SENHA
         if (req.body.senha) req.body.senha = await bcrypt.hash(req.body.senha, salt)
 
-        // SALVA USUÁRIO NO BANCO DE DADOS
-        db.query('INSERT INTO Cad_Usuario SET ?', req.body, (error, result) => {
-            if (error) {
-                if (error.errno == 1062) {
-                    res.status(400).json({
-                        erro: "E-mail já cadastrado!"
-                    })
-                }
-                return new Error
+        // DECLARAÇÃO DE VARIÁVEIS
+        const {
+            nome,
+            email,
+            senha,
+            situacao,
+            tipo
+        } = req.body
 
+        // CRIAÇÃO DE USUÁRIO NO BD
+        try {
+            const newUser = await User.create({
+                nome,
+                email,
+                password: senha,
+                situacao,
+                tipo
+            })
+
+            // ENVIO DE RESPOSTA PARA O CLIENT
+            res.status(201).send(newUser)
+
+        } catch (erro) {
+            if (erro.original.errno === 1062) {
+                res.status(401).json({
+                    erro: "E-mail já cadastrado em sistema"
+                })
             }
-            return res.status(201).json(result)
-        })
-        //db.close()
+
+        }
+
 
     },
     async busca(req, res) {
-        db.query('SELECT * FROM Cad_Usuario', (error, result) => {
-            if (error) {
-                return new Error
-            }
-            return res.status(201).json(result)
-        })
-        //db.close()
+        const Users = await User.findAll()
+
+        return res.status(201).json(Users)
 
     },
     async detalhes(req, res) {
-        db.query('SELECT * FROM Cad_Usuario WHERE ID = ?', req.params.id, (error, result) => {
-            res.status(201).json(result)
+        const user = await User.findOne({
+            where: {
+                id: req.params.id
+            }
         })
-        //db.close()
+        res.status(200).send(user)
+
     },
 
     async login(req, res) {
@@ -48,54 +65,92 @@ module.exports = {
             senha
         } = req.body
 
-        db.query('SELECT * FROM Cad_Usuario WHERE EMAIL = ? AND Situacao = "Ativo" ', email, async (error, result) => {
-            if (error) {
-                return new Error
-            }
-            if (result.length < 1) {
-                res.status(401).json({
-                    erro: "Usuário não encontrado para o e-mail digitado!"
-                })
-                return new Error
-            }
-            console.log(bcrypt.encodeBase64(result[0].senha))
-            const senhaValida = await bcrypt.compare(senha, result[0].senha)
-            if (!senhaValida) {
-                res.status(401).json({
-                    erro: "Senha inválida"
-                })
-                return new Error
-            }
-            const token = jwt.sign({id:result[0].id, tipo:result[0].tipo}, auth.secret, {
-                expiresIn: 60*60*5
-            })
-            if (senhaValida) {
-                res.status(201).json([{user:result[0]} , {token:token}])
+        const user = await User.findOne({
+            where: {
+                email,
+
             }
         })
-        //db.close()
+        if (user == null) {
+            res.status(401).json({
+                erro: "Usuário não encontrado para o e-mail digitado!"
+            })
+            return new Error('Usuário não encontrado para o e-mail digitado!')
+        }
+        const validPassword = await bcrypt.compare(senha, user.password)
+
+        if (!validPassword) {
+            res.status(401).json({
+                erro: "Senha inválida"
+            })
+            return new Error('Senha inválida')
+        }
+
+        if (user.situacao != "Ativo") {
+            res.status(401).json({
+                erro: "Usuário inativo, entre em contato com o administrador"
+            })
+            return new Error('Usuário inativo, entre em contato com o administrador')
+        }
+        const token = jwt.sign({
+            id: user.id,
+            tipo: user.tipo
+        }, auth.secret, {
+            expiresIn: 60 * 60 * 5
+        })
+
+        res.status(200).json({
+            user,
+            token
+        })
+
     },
 
     async atualizar(req, res) {
-        if (req.body.senha) req.body.senha = await bcrypt.hash(req.body.senha, salt)
 
-        db.query('UPDATE Cad_Usuario SET ? WHERE ID = ?', [req.body, req.params.id], (error, result) => {
-            if (error) {
-                return new Error
+        const {
+            nome,
+            email,
+            situacao,
+            tipo
+        } = req.body
+        const id = req.params.id
+        const user = await User.findOne({
+            where: {
+                id
             }
-            return res.status(201).json(result)
         })
-        //db.close()
+
+        user.update({
+            nome,
+            email,
+            situacao,
+            tipo,
+        })
+
+        if (req.body.senha) {
+            password = await bcrypt.hash(req.body.senha, salt)
+            user.update({
+                password
+            })
+        }
+
+        res.status(201).json(user)
+
     },
 
     async deletar(req, res) {
-        db.query('DELETE FROM Cad_Usuario WHERE ID = ?', req.params.id, (error, result) => {
-            if (error) {
-                res.status(402).json(error)
-                return new Error(error)
+
+        const {
+            id
+        } = req.params
+        const user = await User.destroy({
+            where: {
+                id
             }
-            res.status(201).json(result)
         })
-        //db.close()
+
+        res.status(200).json(user)
+
     }
 }

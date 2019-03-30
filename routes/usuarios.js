@@ -6,11 +6,11 @@ const authMiddleware = require('../middlewares/auth')
 
 
 router.post('/login',  ControllerUsuario.login)
-router.post('/usuarios', ControllerUsuario.criar)
+router.post('/usuario', ControllerUsuario.criar)
 router.use(authMiddleware)
-router.get('/usuarios', ControllerUsuario.busca)
-router.get('/usuarios/:id', ControllerUsuario.detalhes)
-router.patch('/usuarios/:id', ControllerUsuario.atualizar)
-router.delete('/usuarios/:id', ControllerUsuario.deletar)
+router.get('/usuario', ControllerUsuario.busca)
+router.get('/usuario/:id', ControllerUsuario.detalhes)
+router.patch('/usuario/:id', ControllerUsuario.atualizar)
+router.delete('/usuario/:id', ControllerUsuario.deletar)
 
 module.exports = app => app.use('/api/v1', router)
