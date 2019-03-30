@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('Notificacoes', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,27 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nome: {
-        allowNull:false,
         type: Sequelize.STRING,
+        allowNull:false
       },
-      email: {
-        allowNull:false,
-        unique:true,
+      descricao: {
         type: Sequelize.STRING,
-      },
-      password: {
-        allowNull:false,
-        type: Sequelize.STRING,
+        allowNull: false
       },
       situacao: {
         allowNull:false,
         type: Sequelize.ENUM,
-        values: ['Inativo', 'Ativo']
-      },
-      tipo: {
-        allowNull:false,
-        type: Sequelize.ENUM,
-        values: ['Admin', 'Usuario']
+        values: ['Criado', 'Editado', 'Removido']
       },
       createdAt: {
         allowNull: false,
@@ -42,6 +32,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('Notificacoes');
   }
 };

@@ -141,9 +141,8 @@ module.exports = {
 
     async deletar(req, res) {
 
-        const {
-            id
-        } = req.params
+        const { id } = req.params
+        
         const user = await User.destroy({
             where: {
                 id

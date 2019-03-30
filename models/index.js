@@ -4,8 +4,13 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
+const dotenv = require('dotenv').config('../.env')
 
-const config = require(__dirname + '/../config/database.js');
+const config = require('../config/database.js');
+
+console.log(config);
+
+
 const db = {};
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
