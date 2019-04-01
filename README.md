@@ -23,7 +23,7 @@ O banco de dados utilizado foi o MySQL através do Sequelize, ele está hospedad
 
 # Deploy 
 
-Esta API está hospedada/rodando no Heroku e é acessível através do link: https:wtt-api.herokuapp.com/api/v1
+Esta API está hospedada/rodando no Heroku e é acessível através do link: https://wtt-api.herokuapp.com/api/v1
 
 # Endpoints
 
