@@ -8,7 +8,7 @@ Para rodar no Docker é necessário fazer o build da imagem que está configurad
 - $ git clone https://github.com/vinniimiranda/wtt-api.git
 - $ cd wtt-api
 - $ docker build -t wtt-api .
-- $ docker run wtt-api
+- $ docker docker run -p 3000:3000 -h 0.0.0.0 wtt-api
 
 A aplicação será subida em um container e você pode acessa-la normalmente.
 

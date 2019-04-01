@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 
 const port = process.env.PORT || 3000
-const HOST = process.env.PORT || '0.0.0.0'
+const HOST = '0.0.0.0'
 
 app.use(bodyParser.json())
 
