@@ -1,6 +1,9 @@
 const {
     Produto, Notificacoes
 } = require('../models/')
+
+const moment = require('moment')
+
 module.exports = {
     async criar(req, res) {
         try {
@@ -33,8 +36,12 @@ module.exports = {
     },
     async busca(req, res) {
        try {
+           
             const Produtos = await Produto.findAll()
-
+            Produtos.forEach(produto => {
+                produto.dataValues.createdAt = moment(produto.createdAt).locale('pt-br').format('L')
+                 
+            })
             res.status(200).json(Produtos)
 
        } catch (error) {
