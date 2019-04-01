@@ -21,16 +21,6 @@ module.exports = {
         allowNull:false,
         type: Sequelize.STRING,
       },
-      situacao: {
-        allowNull:false,
-        type: Sequelize.ENUM,
-        values: ['Inativo', 'Ativo']
-      },
-      tipo: {
-        allowNull:false,
-        type: Sequelize.ENUM,
-        values: ['Admin', 'Usuario']
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

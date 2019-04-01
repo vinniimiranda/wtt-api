@@ -33,11 +33,12 @@ module.exports = {
             res.status(201).send(newUser)
 
         } catch (erro) {
-            if (erro.original.errno === 1062) {
-                res.status(401).json({
-                    erro: "E-mail já cadastrado em sistema"
-                })
-            }
+            // if (erro.original.errno === 1062) {
+            //     res.status(401).json({
+            //         erro: "E-mail já cadastrado em sistema"
+            //     })
+            // }
+            res.status(401).json({erro})
 
         }
 
@@ -86,12 +87,7 @@ module.exports = {
             return new Error('Senha inválida')
         }
 
-        if (user.situacao != "Ativo") {
-            res.status(401).json({
-                erro: "Usuário inativo, entre em contato com o administrador"
-            })
-            return new Error('Usuário inativo, entre em contato com o administrador')
-        }
+        
         const token = jwt.sign({
             id: user.id,
             tipo: user.tipo

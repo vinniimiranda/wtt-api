@@ -20,17 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       type: DataTypes.STRING,
     },
-    situacao: {
-      allowNull:false,
-      type: DataTypes.ENUM,
-      values: ['Inativo', 'Ativo']
-    },
-    tipo: {
-      allowNull:false,
-      type: DataTypes.ENUM,
-      values: ['Admin', 'Usuario']
-    },
-    
+        
   }, {});
   User.associate = function(models) {
     // associations can be defined here
