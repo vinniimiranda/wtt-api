@@ -4,7 +4,14 @@ API Rest para avaliação de teste proposto.
 
 # Docker 
 
-Para rodar no Docker é necessário fazer o build da imagem que está configurado no Dockerfile, depois disso basta acessar http://0.0.0.0:3000 e consumir a API à partir dos endpoints 
+Para rodar no Docker é necessário fazer o build da imagem que está configurado no Dockerfile, para isso com o Docker instalado execute os seguintes comandos no terminal: 
+- $ git clone https://github.com/vinniimiranda/wtt-api.git
+- $ cd wtt-api
+- $ docker build -t wtt-api .
+- $ docker run wtt-api
+
+A aplicação será subida em um container e você pode acessa-la normalmente.
+
 
 # Rodando o projeto
 
