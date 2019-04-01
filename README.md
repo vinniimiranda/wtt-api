@@ -6,7 +6,7 @@ API Rest para avaliação de teste proposto.
 
 Para rodar no Docker é necessário fazer o build da imagem que está configurado no Dockerfile, depois disso basta acessar http://0.0.0.0:3000 e consumir a API à partir dos endpoints 
 
-# Local
+# Rodando o projeto
 
 Para rodar localmente siga as seguintes instruções: 
 
