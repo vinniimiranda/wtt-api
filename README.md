@@ -27,7 +27,7 @@ Para rodar localmente siga as seguintes instruções:
 
 # Banco de dados
 
-O banco de dados utilizado foi o MySQL através do Sequelize, ele está hospedado online com servidor na América Latina para que a comunicação com a API seja mais rápida possível.
+O banco de dados utilizado foi o Postgres (Atualizado) através do Sequelize, ele está hospedado online com servidor na América Latina para que a comunicação com a API seja mais rápida possível.
 
 Para usar em outro banco de dados altere o arquivo database.js na pasta config e rode as migrations com o comando: 
 - $ sequelize db:migrate (para isso é necessário ter o sequelize-cli instalado globalmente na máquina)

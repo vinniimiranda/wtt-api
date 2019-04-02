@@ -1,10 +1,10 @@
 module.exports = {
   
-    host: 'sql10.freemysqlhosting.net',
-    username: 'sql10285231',
-    password: 'ieny7ZnMsC',
-    database: 'sql10285231',
-    dialect: 'mysql',
+    host: 'isilo.db.elephantsql.com',
+    username: 'nkvnidsf',
+    password: 'ITo94Db8DiXy_HIXUEyyz4_dQ40O_Ko8',
+    database: 'nkvnidsf',
+    dialect: 'postgres',
     loggins: true,
     define: {
       timestamps: true,
